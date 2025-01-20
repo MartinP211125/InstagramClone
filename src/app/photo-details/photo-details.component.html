@@ -1,0 +1,12 @@
+<div class="details-container">
+  <div class="image-container">
+    <img src="https://i.ebayimg.com/images/g/lIoAAOSwrHNepp26/s-l1200.jpg" [alt]="photo.title" class="main-image" />
+  </div>
+
+  <h1 class="photo-title">{{ photo.title }}</h1>
+
+  <div class="action-buttons">
+    <button class="edit-button" (click)="editPhoto()">Edit</button>
+    <button class="delete-button" (click)="deletePhoto()">Delete</button>
+  </div>
+</div>

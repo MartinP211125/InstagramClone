@@ -1,0 +1,13 @@
+<body>
+  <div class="add-button-container">
+    <button class="add-button" (click)="addNewPhoto()">Add Photo</button>
+  </div>
+  <cdk-virtual-scroll-viewport #scroller class="grid-container" [itemSize]="400" [minBufferPx]="800" [maxBufferPx]="1600">
+    <div class="grid-item" *cdkVirtualFor="let photo of photos">
+      <app-photo [image]="photo.thumbnailUrl"
+                 [photo]="photo"
+                 (details)="getDetails(photo)">
+      </app-photo>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</body>

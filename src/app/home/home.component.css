@@ -1,0 +1,78 @@
+body{
+    overflow:hidden;
+}
+
+/* Center the add button at the top */
+.add-button-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Style the add button */
+.add-button {
+  background-color: #007bff; /* Primary blue */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-button:hover {
+  background-color: #0056b3; /* Darker blue */
+}
+
+.add-button:active {
+  transform: scale(0.95); /* Slightly shrink on click */
+}
+
+.add-button:disabled {
+  background-color: #cccccc; /* Gray when disabled */
+  cursor: not-allowed;
+}
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 500px); 
+  grid-template-rows: repeat(2, auto); 
+  gap: 10px; 
+  padding: 20px;
+  justify-items: center; 
+}
+
+.grid-item {
+  background-color: #f0f0f0; 
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  width:400px;
+  height: 388px; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+
+
+cdk-virtual-scroll-viewport {
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full width */
+  overflow: auto; /* Allow scrolling */
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(3, auto); /* 3 rows */
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* 1 column */
+    grid-template-rows: auto; /* Automatically adjust rows */
+  }
+}

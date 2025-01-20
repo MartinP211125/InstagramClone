@@ -1,0 +1,45 @@
+<div class="form-container">
+  <form [formGroup]="photoForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="albumId">Album ID</label>
+      <input id="albumId" type="number" formControlName="albumId" />
+      <div *ngIf="photoForm.get('albumId')?.invalid && photoForm.get('albumId')?.touched">
+        <small>Album ID is required and must be greater than 0.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="id">ID</label>
+      <input id="id" type="number" formControlName="id" />
+      <div *ngIf="photoForm.get('id')?.invalid && photoForm.get('id')?.touched">
+        <small>ID is required and must be greater than 0.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" />
+      <div *ngIf="photoForm.get('title')?.invalid && photoForm.get('title')?.touched">
+        <small>Title is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="url">URL</label>
+      <input id="url" type="url" formControlName="url" />
+      <div *ngIf="photoForm.get('url')?.invalid && photoForm.get('url')?.touched">
+        <small>Valid URL is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="thumbnailUrl">Thumbnail URL</label>
+      <input id="thumbnailUrl" type="url" formControlName="thumbnailUrl" />
+      <div *ngIf="photoForm.get('thumbnailUrl')?.invalid && photoForm.get('thumbnailUrl')?.touched">
+        <small>Valid Thumbnail URL is required.</small>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="photoForm.invalid">Submit</button>
+  </form>
+</div>
