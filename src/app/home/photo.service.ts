@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IPhoto } from './photo.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,6 @@ export class PhotoService {
   }
 
   getPhoto(photoId: string): Observable<any> {
-    const params = new HttpParams()
     return this.http.get<any>(this.apiUrl + "/" + photoId);
   }
 

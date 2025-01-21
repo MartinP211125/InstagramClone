@@ -4,6 +4,7 @@ import { PhotoService } from './photo.service';
 import { Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { filter, map, pairwise, throttleTime } from 'rxjs';
+import { ErrorHandlerService } from '../error-handler.service';
 
 @Component({
   selector: 'app-home',
@@ -17,10 +18,11 @@ export class HomeComponent implements OnInit, AfterViewInit  {
   offset: number = 0;
   limit: number = 9;
   loading: boolean = false;
-  constructor(private photoService: PhotoService, private router: Router, private ngZone: NgZone) { }
+  constructor(private photoService: PhotoService, private router: Router, private ngZone: NgZone, private errorHandler: ErrorHandlerService) { }
   ngOnInit() {
     this.loadMorePhotos();
   }
+
 
   ngAfterViewInit() {
     this.scroller.elementScrolled().pipe(
@@ -42,8 +44,13 @@ export class HomeComponent implements OnInit, AfterViewInit  {
 
   loadMorePhotos() {
     this.toggleLoading();
-    this.photoService.getPhotos(this.offset, this.limit).subscribe((photos) => {
-      this.photos = photos;
+    this.photoService.getPhotos(this.offset, this.limit).subscribe({
+      next: (photos) => {
+        this.photos = photos;
+      },
+      error: (err) => {
+        this.errorHandler.handleError(err);
+      },
     });
   }
 
@@ -60,8 +67,13 @@ export class HomeComponent implements OnInit, AfterViewInit  {
   }
 
   addMorePhotos() {
-    this.photoService.getPhotos(this.offset, this.limit).subscribe((photos) => {
-      this.photos = [...this.photos, ...photos];
+    this.photoService.getPhotos(this.offset, this.limit).subscribe({
+      next: (photos) => {
+        this.photos = [...this.photos, ...photos];
+      },
+      error: (err) => {
+        this.errorHandler.handleError(err);
+      },
     });
   }
 }

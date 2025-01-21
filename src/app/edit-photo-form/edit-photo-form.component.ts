@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { PhotoService } from '../home/photo.service';
 import { IPhoto } from '../home/photo.model';
+import { ErrorHandlerService } from '../error-handler.service';
 
 @Component({
   selector: 'app-edit-photo-form',
@@ -13,7 +14,7 @@ import { IPhoto } from '../home/photo.model';
 export class EditPhotoFormComponent implements OnInit {
   photoForm!: FormGroup
   photo!: IPhoto
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private photoService: PhotoService, private router: Router) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private photoService: PhotoService, private router: Router, private errorHandler: ErrorHandlerService) {
     this.photoForm = this.fb.group({
       albumId: [null, [Validators.required, Validators.min(1)]],
       id: [null, [Validators.required, Validators.min(1)]],
@@ -49,13 +50,13 @@ export class EditPhotoFormComponent implements OnInit {
   onSubmit(): void {
     if (this.photoForm.valid) {
       this.photoService.updatePhoto(JSON.stringify(this.photo.id), this.photoForm.value).subscribe({
-        error: (err) => console.log(err),
-        complete: () => console.log("edit completed")
+        error: (err) => {
+          this.errorHandler.handleError(err);
+        },
       });
       this.router.navigate(['/home']);
     } else {
       this.router.navigate(['/edit', this.photo.id]);
-      console.log("form not valid")
     }
   }
 

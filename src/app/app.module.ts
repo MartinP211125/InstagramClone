@@ -11,6 +11,8 @@ import { PhotoFormComponent } from './photo-form/photo-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditPhotoFormComponent } from './edit-photo-form/edit-photo-form.component';
 import { PageNotFoundErrorComponent } from './page-not-found-error/page-not-found-error.component';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [ 
@@ -20,14 +22,16 @@ import { PageNotFoundErrorComponent } from './page-not-found-error/page-not-foun
     PhotoDetailsComponent,
     PhotoFormComponent,
     EditPhotoFormComponent,
-    PageNotFoundErrorComponent
+    PageNotFoundErrorComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ScrollingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   providers: [], 
   bootstrap: [AppComponent] 

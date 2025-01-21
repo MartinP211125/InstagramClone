@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IPhoto } from '../home/photo.model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { PhotoService } from '../home/photo.service';
+import { ErrorHandlerService } from '../error-handler.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { PhotoService } from '../home/photo.service';
 export class PhotoDetailsComponent implements OnInit {
   photo!: IPhoto;
 
-  constructor(private activeRoute: ActivatedRoute, private router: Router, private photoService: PhotoService) { }
+  constructor(private activeRoute: ActivatedRoute, private router: Router, private photoService: PhotoService, private errorHandler: ErrorHandlerService) { }
 
   ngOnInit() {
     this.activeRoute.paramMap.subscribe(params => {
@@ -35,13 +36,12 @@ export class PhotoDetailsComponent implements OnInit {
           console.log('Photo deleted successfully.');
         },
         error: (err) => {
-          console.log(err);
+          this.errorHandler.handleError(err);
         },
         complete: () => {
           this.router.navigate(['/home']);
         }
       });
-
     }
   }
 }

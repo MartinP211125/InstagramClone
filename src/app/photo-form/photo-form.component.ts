@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PhotoService } from '../home/photo.service';
+import { ErrorHandlerService } from '../error-handler.service';
 
 @Component({
   selector: 'app-photo-form',
@@ -12,7 +13,7 @@ import { PhotoService } from '../home/photo.service';
 export class PhotoFormComponent {
   photoForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private photoService: PhotoService, private router: Router) {
+  constructor(private fb: FormBuilder, private photoService: PhotoService, private router: Router, private errorHandler: ErrorHandlerService) {
     this.photoForm = this.fb.group({
       albumId: [1, [Validators.required, Validators.min(1)]],
       id: [1, [Validators.required, Validators.min(1)]],
@@ -24,15 +25,15 @@ export class PhotoFormComponent {
 
   onSubmit(): void {
     if (this.photoForm.valid) {
-      console.log("form is valid");
       this.photoService.addPhoto(this.photoForm.value).subscribe({
-        error: (err) => console.log(err),
-        complete: () => console.log("photo added.")
+        error: (err) => {
+          this.errorHandler.handleError(err);
+        },
       });
       this.router.navigate(['/home']);
     } else {
       this.router.navigate(['/add']);
     }
   }
-
+  
 }
