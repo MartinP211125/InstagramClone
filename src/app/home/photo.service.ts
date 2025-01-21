@@ -10,10 +10,11 @@ export class PhotoService {
 
   constructor(private http: HttpClient) { }
 
-  getPhotos(offset: number = 0, limit: number = 9): Observable<any[]> {
+  getPhotos(offset: number = 0, limit: number = 9, sortBy: string = "id"): Observable<any[]> {
     const params = new HttpParams()
       .set('_start', offset.toString())
-      .set('_limit', limit.toString());
+      .set('_limit', limit.toString())
+      .set('_sort', sortBy);
 
     return this.http.get<any[]>(this.apiUrl, { params });
   }

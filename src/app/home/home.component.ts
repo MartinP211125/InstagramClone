@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { IPhoto } from './photo.model';
 import { PhotoService } from './photo.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { filter, map, pairwise, throttleTime } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler.service';
@@ -18,8 +18,13 @@ export class HomeComponent implements OnInit, AfterViewInit  {
   offset: number = 0;
   limit: number = 9;
   loading: boolean = false;
-  constructor(private photoService: PhotoService, private router: Router, private ngZone: NgZone, private errorHandler: ErrorHandlerService) { }
+  sortBy: string = "id";
+
+  constructor(private photoService: PhotoService, private router: Router, private ngZone: NgZone, private errorHandler: ErrorHandlerService, private route: ActivatedRoute) { }
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.sortBy = params['sortBy'] ?? 'id';
+    });
     this.loadMorePhotos();
   }
 
@@ -44,7 +49,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
 
   loadMorePhotos() {
     this.toggleLoading();
-    this.photoService.getPhotos(this.offset, this.limit).subscribe({
+    this.photoService.getPhotos(this.offset, this.limit, this.sortBy).subscribe({
       next: (photos) => {
         this.photos = photos;
       },
@@ -67,7 +72,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
   }
 
   addMorePhotos() {
-    this.photoService.getPhotos(this.offset, this.limit).subscribe({
+    this.photoService.getPhotos(this.offset, this.limit, this.sortBy).subscribe({
       next: (photos) => {
         this.photos = [...this.photos, ...photos];
       },
@@ -75,5 +80,12 @@ export class HomeComponent implements OnInit, AfterViewInit  {
         this.errorHandler.handleError(err);
       },
     });
+  }
+
+  setSortBy(attribute: string): void {
+    this.sortBy = attribute;
+    this.offset = 0;
+    this.photos = [];
+    this.loadMorePhotos();
   }
 }

@@ -1,3 +1,4 @@
+
 body{
     overflow:hidden;
 }
@@ -74,3 +75,18 @@ cdk-virtual-scroll-viewport {
     grid-template-rows: auto; 
   }
 }
+
+.button-container {
+  margin-bottom: 1rem;
+}
+
+button {
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+  button:hover {
+    background-color: #f0f0f0;
+  }
