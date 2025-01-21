@@ -10,6 +10,7 @@ import { PhotoDetailsComponent } from './photo-details/photo-details.component';
 import { PhotoFormComponent } from './photo-form/photo-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditPhotoFormComponent } from './edit-photo-form/edit-photo-form.component';
+import { PageNotFoundErrorComponent } from './page-not-found-error/page-not-found-error.component';
 
 @NgModule({
   declarations: [ 
@@ -18,7 +19,8 @@ import { EditPhotoFormComponent } from './edit-photo-form/edit-photo-form.compon
     PhotoComponent,
     PhotoDetailsComponent,
     PhotoFormComponent,
-    EditPhotoFormComponent
+    EditPhotoFormComponent,
+    PageNotFoundErrorComponent
   ],
   imports: [
     BrowserModule,
