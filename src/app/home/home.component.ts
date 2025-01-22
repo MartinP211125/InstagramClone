@@ -5,7 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { filter, map, pairwise, throttleTime } from 'rxjs';
 import { ErrorHandlerService } from '../error-handler.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -22,7 +24,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
 
   constructor(private photoService: PhotoService, private router: Router, private ngZone: NgZone, private errorHandler: ErrorHandlerService, private route: ActivatedRoute) { }
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.pipe(untilDestroyed(this)).subscribe((params) => {
       this.sortBy = params['sortBy'] ?? 'id';
     });
     this.loadMorePhotos();
@@ -34,7 +36,8 @@ export class HomeComponent implements OnInit, AfterViewInit  {
       map(() => this.scroller.measureScrollOffset("bottom")),
       pairwise(),
       filter(([y1, y2]) => (y2 < y1) && (y2 < 800)),
-      throttleTime(200)
+      throttleTime(200),
+      untilDestroyed(this)
     ).subscribe(() => {
       this.ngZone.run(() => {
         this.incrementOffset();
@@ -49,7 +52,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
 
   loadMorePhotos() {
     this.toggleLoading();
-    this.photoService.getPhotos(this.offset, this.limit, this.sortBy).subscribe({
+    this.photoService.getPhotos(this.offset, this.limit, this.sortBy).pipe(untilDestroyed(this)).subscribe({
       next: (photos) => {
         this.photos = photos;
       },
@@ -72,7 +75,7 @@ export class HomeComponent implements OnInit, AfterViewInit  {
   }
 
   addMorePhotos() {
-    this.photoService.getPhotos(this.offset, this.limit, this.sortBy).subscribe({
+    this.photoService.getPhotos(this.offset, this.limit, this.sortBy).pipe(untilDestroyed(this)).subscribe({
       next: (photos) => {
         this.photos = [...this.photos, ...photos];
       },

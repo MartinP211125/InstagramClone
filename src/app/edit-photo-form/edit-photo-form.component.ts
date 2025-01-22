@@ -4,7 +4,9 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 import { PhotoService } from '../home/photo.service';
 import { IPhoto } from '../home/photo.model';
 import { ErrorHandlerService } from '../error-handler.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-edit-photo-form',
   templateUrl: './edit-photo-form.component.html',
@@ -24,7 +26,7 @@ export class EditPhotoFormComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.pipe(untilDestroyed(this)).subscribe(params => {
       const photoParams = params.get("id");
       if (photoParams) {
         let photoId = JSON.parse(photoParams);
@@ -34,7 +36,7 @@ export class EditPhotoFormComponent implements OnInit {
    }
 
   loadPhoto(photoId: number) {
-    this.photoService.getPhoto(photoId.toString()).subscribe((photo) => {
+    this.photoService.getPhoto(photoId.toString()).pipe(untilDestroyed(this)).subscribe((photo) => {
       this.photo = photo;
 
       this.photoForm.patchValue({
@@ -49,7 +51,7 @@ export class EditPhotoFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.photoForm.valid) {
-      this.photoService.updatePhoto(JSON.stringify(this.photo.id), this.photoForm.value).subscribe({
+      this.photoService.updatePhoto(JSON.stringify(this.photo.id), this.photoForm.value).pipe(untilDestroyed(this)).subscribe({
         error: (err) => {
           this.errorHandler.handleError(err);
         },

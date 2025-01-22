@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PhotoService } from '../home/photo.service';
 import { ErrorHandlerService } from '../error-handler.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-photo-form',
   templateUrl: './photo-form.component.html',
@@ -25,7 +27,7 @@ export class PhotoFormComponent {
 
   onSubmit(): void {
     if (this.photoForm.valid) {
-      this.photoService.addPhoto(this.photoForm.value).subscribe({
+      this.photoService.addPhoto(this.photoForm.value).pipe(untilDestroyed(this)).subscribe({
         error: (err) => {
           this.errorHandler.handleError(err);
         },
