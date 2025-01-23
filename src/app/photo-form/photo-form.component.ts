@@ -31,8 +31,10 @@ export class PhotoFormComponent {
         error: (err) => {
           this.errorHandler.handleError(err);
         },
+        complete: () => {
+          this.router.navigate(['/home']);
+        }
       });
-      this.router.navigate(['/home']);
     } else {
       this.router.navigate(['/add']);
     }

@@ -20,11 +20,11 @@ export class PhotoService {
   }
 
   deletePhoto(photoId: string): Observable<any> {
-    return this.http.delete(this.apiUrl + "/" + photoId);
+    return this.http.delete(`${this.apiUrl}/${photoId}`);
   }
 
   getPhoto(photoId: string): Observable<any> {
-    return this.http.get<any>(this.apiUrl + "/" + photoId);
+    return this.http.get<any>(`${this.apiUrl}/${photoId}`);
   }
 
   updatePhoto(photoId: string, photo: any): Observable<any> {
